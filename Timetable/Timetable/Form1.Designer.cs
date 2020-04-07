@@ -149,6 +149,7 @@
             this.passwordField.PasswordChar = '*';
             this.passwordField.Size = new System.Drawing.Size(306, 31);
             this.passwordField.TabIndex = 3;
+            this.hintForPass.SetToolTip(this.passwordField, "Password must contain at least 6 characters");
             // 
             // showPass_Check
             // 
