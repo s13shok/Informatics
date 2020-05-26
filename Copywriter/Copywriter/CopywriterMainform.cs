@@ -181,7 +181,7 @@ namespace Сopywriter
                 graphics.DrawString(TextC, FontC, new Pen(Color).Brush, 50, 50);
                 var drawChecked = Graphics.FromImage(panelBitmap);
                 var dy = 200 * (int)pictureBox1.Tag + 15;
-                var points = new Point[] { new Point(10, 20), new Point(30, 40), new Point(60, 10) };
+                var points = new Point[] { new Point(10, 20 + dy), new Point(30, 40 + dy), new Point(60, 10 + dy) };
                 drawChecked.DrawLines(new Pen(Color.Green, 5), points);
                 panel1.Refresh();
                 DataGridAddRow(ImageFiles[(int)pictureBox1.Tag], img);
@@ -204,6 +204,29 @@ namespace Сopywriter
             dataGridView1.Rows[currentRow].Cells[1].Value = img.Width;
             dataGridView1.Rows[currentRow].Cells[2].Value = img.Height;
             dataGridView1.Rows[currentRow].Cells[3].Value = $"{TextC} [{DateTime.Now.ToShortTimeString()}]";
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (PathToOpenFolder != null)
+            {
+                int cnt = 0;
+                foreach (var key in ImageFiles.Keys)
+                {
+                    if (FilesNotForSave.BinarySearch(key) < 0)
+                    {
+                        var img = new Bitmap(ImageFiles[key]);
+                        var graphics = Graphics.FromImage(img);
+                        graphics.DrawString(TextC, FontC, new Pen(Color).Brush, 50, 50);
+                        var path = PathToSaveFolder + @"\" + $"{cnt++}__" + Path.GetFileName(ImageFiles[key]);
+                        img.Save(path);
+                    }
+                }
+                MessageBox.Show("All files saved successfully!");
+            }
+            else
+            {
+                MessageBox.Show("This mode is for multiple images!");
+            }
         }
         #endregion
         #region Settings
@@ -262,29 +285,7 @@ namespace Сopywriter
 
         #endregion
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (PathToOpenFolder!=null)
-            {
-                int cnt = 0;
-                foreach (var key in ImageFiles.Keys)
-                {
-                    if (FilesNotForSave.BinarySearch(key) < 0)
-                    {
-                        var img = new Bitmap(ImageFiles[key]);
-                        var graphics = Graphics.FromImage(img);
-                        graphics.DrawString(TextC, FontC, new Pen(Color).Brush, 50, 50);
-                        var path = PathToSaveFolder + @"\" + $"{cnt++}__" + Path.GetFileName(ImageFiles[key]);
-                        img.Save(path);
-                    }
-                }
-                MessageBox.Show("All files saved successfully!");
-            }
-            else
-            {
-                MessageBox.Show("This mode is for multiple images!");
-            }
-        }
+
     }
 
 }
